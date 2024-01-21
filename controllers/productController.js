@@ -8,6 +8,7 @@ export const addProduct = async (req, res) => {
     id: id,
     name: req.body.name,
     image: req.body.image,
+    image_public_id: req.body.image_public_id,
     category: req.body.category,
     new_price: req.body.new_price,
     old_price: req.body.old_price,
@@ -81,7 +82,8 @@ export const getPopularProducts = async (req, res) => {
   // Controller logic for getting popular women products
   try {
     const popularItems = await Product.find({ category: "women" });
-    const popular = popularItems.length > 4 ? popularItems.slice(0, 4) : popularItems;
+    const popular =
+      popularItems.length > 4 ? popularItems.slice(0, 4) : popularItems;
     res.send(popular);
   } catch (error) {
     res.status(500).send({
@@ -89,4 +91,3 @@ export const getPopularProducts = async (req, res) => {
     });
   }
 };
-

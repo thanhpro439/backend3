@@ -1,14 +1,9 @@
-import express from 'express';
-import { createStorageEngine, createUploader, imageUpload } from '../controllers/uploadController.js';
-
+import express from "express";
+import { imageUpload } from "../controllers/uploadController.js";
+import upload from "../middleware/multer.js";
 
 const uploadRouters = express.Router();
 
-const storage = createStorageEngine('./upload/image')
-const upload = createUploader(storage)
+uploadRouters.post("/", upload.single("product"), imageUpload);
 
-// uploadRouters.use('/images', express.static('upload/images'));
-uploadRouters.post('/', upload.single('product'), imageUpload )
-
-
-export default uploadRouters
+export default uploadRouters;

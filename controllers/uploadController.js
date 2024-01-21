@@ -1,31 +1,23 @@
-import multer from "multer";
-import path from "path";
+import cloudinary from "../utils/cloudinary.js";
 
-// Image storage engine
-const createStorageEngine = (destination) => {
-  return multer.diskStorage({
-    destination: destination,
-    filename: (req, file, cb) => {
-      return cb(
-        null,
-        `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`
-      );
-    },
-  });
+export const imageUpload = (req, res) => {
+  cloudinary.uploader.upload(
+    req.file.path,
+    { folder: "fam_store" },
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        return res.json({
+          success: false,
+          message: "error",
+        });
+      }
+
+      res.json({
+        success: true,
+        message: "Uploaded",
+        data: result,
+      });
+    }
+  );
 };
-
-const createUploader = (storage) => {
-  return multer({ storage: storage });
-};
-
-// export const upload = multer({ storage: storage });
-
-const imageUpload = (req, res) => {
-  console.log(req.file);
-  res.json({
-    success: 1,
-    image_url: `http://localhost:4000/images/${req.file.filename}`,
-  });
-};
-
-export { createStorageEngine, createUploader, imageUpload };
