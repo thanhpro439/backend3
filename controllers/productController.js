@@ -81,7 +81,7 @@ export const getNewCollection = async (req, res) => {
 export const getPopularProducts = async (req, res) => {
   // Controller logic for getting popular women products
   try {
-    const popularItems = await Product.find({ category: "women" });
+    const popularItems = await Product.find({ category: "naruto" });
     const popular =
       popularItems.length > 4 ? popularItems.slice(0, 4) : popularItems;
     res.send(popular);
@@ -89,5 +89,20 @@ export const getPopularProducts = async (req, res) => {
     res.status(500).send({
       error: "Internal Server Error",
     });
+  }
+};
+
+export const getCategory = async (req, res) => {
+  try {
+    const categories = await Product.aggregate([
+      { $group: { _id: "$category", count: { $sum: 1 } } },
+      { $project: { _id: 0, category: "$_id", count: 1 } },
+      { $sort: { category: 1 } },
+    ]).exec();
+
+    res.send(categories);
+  } catch (error) {
+    console.error("Lỗi khi truy xuất category:", error);
+    res.status(500).json({ error: "Lỗi khi truy xuất dữ liệu" });
   }
 };
