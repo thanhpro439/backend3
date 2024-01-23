@@ -13,6 +13,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+console.log(env.DB_USER, env.DB_PASSWORD);
+
 mongoose.connect(
   `mongodb+srv://${env.DB_USER}:${env.DB_PASSWORD}@famstore.bc1gtb2.mongodb.net/famstore`
 );

@@ -106,3 +106,22 @@ export const getCategory = async (req, res) => {
     res.status(500).json({ error: "Lỗi khi truy xuất dữ liệu" });
   }
 };
+
+export const searchProductByName = async (req, res) => {
+  const productName = req.params.name;
+
+  try {
+    const products = await Product.find({
+      name: { $regex: productName, $options: "i" },
+    });
+
+    if (products.length > 0) {
+      res.json(products);
+    } else {
+      res.status(404).json({ error: "Product not found!" });
+    }
+  } catch (error) {
+    console.error("Lỗi khi truy xuất sản phẩm:", error);
+    res.status(500).json({ error: "Lỗi khi truy xuất dữ liệu" });
+  }
+};
