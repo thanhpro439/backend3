@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import Users from "../models/userModel.js";
 
+
 export const signUp = async (req, res) => {
   // Controller logic for user signup
   let check = await Users.findOne({ email: req.body.email });
